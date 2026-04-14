@@ -1,0 +1,41 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Dribl — Association",
+        "description": "⚠️ This is an unofficial, experimental integration — not affiliated with Dribl. Please cross-check game times and locations with your club before travelling.\n\nEnter the Dribl association subdomain. You can find this in the URL when you visit your competition fixtures page (e.g. **nwsf** from `nwsf.dribl.com`).",
+        "data": {
+          "association_slug": "Association (e.g. nwsf)"
+        }
+      },
+      "club": {
+        "title": "Dribl — Select Club",
+        "description": "Select your club from the {association} association.",
+        "data": {
+          "club": "Club"
+        }
+      },
+      "competition": {
+        "title": "Dribl — Select Competition",
+        "description": "Select the competition {club} plays in.",
+        "data": {
+          "competition": "Competition"
+        }
+      },
+      "league": {
+        "title": "Dribl — Select Team",
+        "description": "Select the specific team (age group / division) for {club} in {competition}.",
+        "data": {
+          "league": "Team"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to Dribl. Check the association name and try again.",
+      "no_leagues": "No teams found for this club and competition. Try a different competition."
+    },
+    "abort": {
+      "already_configured": "This team is already configured."
+    }
+  }
+}
