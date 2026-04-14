@@ -1,9 +1,8 @@
 """Config flow — guided wizard so the user only needs to know their team name."""
+
 from __future__ import annotations
 
 import voluptuous as vol
-import aiohttp
-
 from homeassistant import config_entries
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -46,19 +45,19 @@ class DriblConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._tenant = await self._api.resolve_tenant(slug)
                 self._clubs = await self._api.get_clubs(self._tenant["id"])
                 self._seasons = await self._api.get_seasons(self._tenant["id"])
-            except DriblApiError as e:
+            except DriblApiError:
                 errors["base"] = "cannot_connect"
             else:
                 return await self.async_step_club()
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema({
-                vol.Required("association_slug"): str,
-            }),
-            description_placeholders={
-                "example": "nwsf  (from nwsf.dribl.com)"
-            },
+            data_schema=vol.Schema(
+                {
+                    vol.Required("association_slug"): str,
+                }
+            ),
+            description_placeholders={"example": "nwsf  (from nwsf.dribl.com)"},
             errors=errors,
         )
 
@@ -87,9 +86,11 @@ class DriblConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         club_options = {c["id"]: c["name"] for c in self._clubs}
         return self.async_show_form(
             step_id="club",
-            data_schema=vol.Schema({
-                vol.Required("club"): vol.In(club_options),
-            }),
+            data_schema=vol.Schema(
+                {
+                    vol.Required("club"): vol.In(club_options),
+                }
+            ),
             description_placeholders={"association": self._tenant["name"]},
             errors=errors,
         )
@@ -119,9 +120,11 @@ class DriblConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         comp_options = {c["id"]: c["name"] for c in self._competitions}
         return self.async_show_form(
             step_id="competition",
-            data_schema=vol.Schema({
-                vol.Required("competition"): vol.In(comp_options),
-            }),
+            data_schema=vol.Schema(
+                {
+                    vol.Required("competition"): vol.In(comp_options),
+                }
+            ),
             description_placeholders={"club": self._club_name},
             errors=errors,
         )
@@ -133,11 +136,13 @@ class DriblConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             league_id = user_input["league"]
             league_name = next(
-                l["name"] for l in self._leagues if l["id"] == league_id
+                lg["name"] for lg in self._leagues if lg["id"] == league_id
             )
             title = f"{self._club_name} — {league_name}"
 
-            await self.async_set_unique_id(f"{self._tenant['id']}_{self._club_id}_{league_id}")
+            await self.async_set_unique_id(
+                f"{self._tenant['id']}_{self._club_id}_{league_id}"
+            )
             self._abort_if_unique_id_configured()
 
             return self.async_create_entry(
@@ -157,12 +162,14 @@ class DriblConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 },
             )
 
-        league_options = {l["id"]: l["name"] for l in self._leagues}
+        league_options = {lg["id"]: lg["name"] for lg in self._leagues}
         return self.async_show_form(
             step_id="league",
-            data_schema=vol.Schema({
-                vol.Required("league"): vol.In(league_options),
-            }),
+            data_schema=vol.Schema(
+                {
+                    vol.Required("league"): vol.In(league_options),
+                }
+            ),
             description_placeholders={
                 "club": self._club_name,
                 "competition": self._competition_name,

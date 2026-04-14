@@ -1,4 +1,5 @@
 """Sensor platform — one sensor per configured team."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -69,7 +70,8 @@ class DriblFixtureSensor(CoordinatorEntity, SensorEntity):
             return None
         now = datetime.now(tz=timezone.utc)
         upcoming = [
-            f for f in fixtures
+            f
+            for f in fixtures
             if f["status"] == "pending"
             and datetime.fromisoformat(f["date"].replace("Z", "+00:00")) > now
         ]

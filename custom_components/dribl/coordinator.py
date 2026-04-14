@@ -1,4 +1,5 @@
 """DataUpdateCoordinator — polls Dribl API on a schedule."""
+
 from __future__ import annotations
 
 import logging
