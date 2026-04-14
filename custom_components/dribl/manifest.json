@@ -1,10 +1,10 @@
 {
   "domain": "dribl",
   "name": "Dribl Fixtures",
-  "version": "1.0.0",
+  "codeowners": [],
   "config_flow": true,
   "documentation": "https://github.com/andrewkriley/dribl-schedule",
-  "requirements": [],
   "iot_class": "cloud_polling",
-  "codeowners": []
+  "requirements": [],
+  "version": "1.0.0"
 }
